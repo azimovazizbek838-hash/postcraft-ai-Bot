@@ -156,7 +156,7 @@ async def process_prompt(message: types.Message, state: FSMContext):
     
     try:
         response = await groq_client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="llama3-70b-8192",
             messages=[
                 {"role": "system", "content": f"{t['sys_prompt']} Respond strictly in language code: {t['lang_code']}."},
                 {"role": "user", "content": message.text}
