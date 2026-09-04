@@ -199,9 +199,27 @@ async def process_prompt(message: types.Message, state: FSMContext):
     await state.clear()
 
 
-async def main():
-    await dp.start_polling(bot)
+import os
+from aiohttp import web
 
+# Render uchun soxta port yaratuvchi funksiya
+async def handle(request):
+    return web.Response(text="PostCraft AI is running active!")
+
+async def start_dummy_server():
+    app = web.Application()
+    app.router.add_get("/", handle)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    port = int(os.environ.get("PORT", 10000))
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
+
+async def main():
+    # Render port xatosini yo'qotish uchun serverni ishga tushirish
+    await start_dummy_server()
+    # Bot pollingini boshlash
+    await dp.start_polling(bot)
 
 if __name__ == "__main__":
     asyncio.run(main())
